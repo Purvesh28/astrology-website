@@ -95,7 +95,7 @@ export default function Hero() {
           >
 
             <Image
-              src="/images/father.jpg"
+              src="/images/Father.JPG"
               alt="Astrologer"
               fill
               className="object-cover"
