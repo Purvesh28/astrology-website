@@ -1,14 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import DatePicker from "react-datepicker";
-
-import "react-datepicker/dist/react-datepicker.css";
 
 export default function BookingPage() {
   const [loading, setLoading] = useState(false);
-  const [dob, setDob] = useState<Date | null>(null);
-  const [birthTime, setBirthTime] = useState("");
 
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
@@ -22,12 +17,9 @@ export default function BookingPage() {
     const data = {
       firstName: (form.elements.namedItem("firstName") as HTMLInputElement).value,
       lastName: (form.elements.namedItem("lastName") as HTMLInputElement).value,
-      // dob: (form.elements.namedItem("dob") as HTMLInputElement).value,
-      dob: dob ? dob.toISOString().split("T")[0] : "",
-
+      dob: (form.elements.namedItem("dob") as HTMLInputElement).value,
       birthPlace: (form.elements.namedItem("birthPlace") as HTMLInputElement).value,
-      // birthTime: (form.elements.namedItem("birthTime") as HTMLInputElement).value,
-      birthTime: birthTime ? birthTime.toLocaleTimeString("en-GB", {hour: "2-digit",minute: "2-digit",hour12: false,}) : "",
+      birthTime: (form.elements.namedItem("birthTime") as HTMLInputElement).value,
       phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
       message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
     };
@@ -49,9 +41,6 @@ export default function BookingPage() {
         alert("Booking submitted successfully!");
 
         form.reset();
-
-        setDob(null);
-        setBirthTime(null);
       } else {
         alert("Something went wrong.");
       }
@@ -104,19 +93,11 @@ export default function BookingPage() {
             />
           </div>
 
-          <DatePicker
-            selected={dob}
-            onChange={(date) => setDob(date)}
-            dateFormat="dd/MM/yyyy"
-            placeholderText="Select Date of Birth"
-            maxDate={new Date()}
-            showYearDropdown
-            showMonthDropdown
-            dropdownMode="select"
-            yearDropdownItemNumber={100}
-            scrollableYearDropdown
-            className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 outline-none text-white"
-            wrapperClassName="w-full"
+          <input
+            type="date"
+            name="dob"
+            required
+            className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 outline-none"
           />
 
           <input
@@ -133,7 +114,7 @@ export default function BookingPage() {
             required
             className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 outline-none"
           />
-          
+
           <input
             type="tel"
             name="phone"
