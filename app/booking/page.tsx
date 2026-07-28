@@ -1,8 +1,11 @@
 "use client";
 
+import { useLoading } from "@/context/LoadingContext";
 import React, { useState } from "react";
 
 export default function BookingPage() {
+  const { showLoader, hideLoader } = useLoading();
+
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (
@@ -11,6 +14,7 @@ export default function BookingPage() {
     e.preventDefault();
 
     setLoading(true);
+    showLoader();
 
     const form = e.currentTarget;
 
@@ -48,8 +52,9 @@ export default function BookingPage() {
       console.error(error);
       alert("Unable to submit booking.");
     } finally {
-      setLoading(false);
-    }
+        setLoading(false);
+        hideLoader();
+      }
   };
 
   return (
