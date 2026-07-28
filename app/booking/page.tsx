@@ -8,7 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 export default function BookingPage() {
   const [loading, setLoading] = useState(false);
   const [dob, setDob] = useState<Date | null>(null);
-  const [birthTime, setBirthTime] = useState<Date | null>(null);
+  const [birthTime, setBirthTime] = useState("");
 
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
