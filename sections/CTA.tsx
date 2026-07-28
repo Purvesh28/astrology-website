@@ -1,3 +1,5 @@
+import Button from "@/components/ui/Button";
+
 export default function CTA() {
   return (
     <section id="contact" className="py-28 px-6">
@@ -17,9 +19,8 @@ export default function CTA() {
           Book a personalized astrology consultation today.
         </p>
 
-        <button className="bg-yellow-500 text-black px-10 py-5 rounded-full font-semibold">
-          Book Consultation
-        </button>
+        <Button text="Book Consultation" />
+
 
       </div>
 

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { HiMenu, HiX } from "react-icons/hi";
+import Button from "@/components/ui/Button";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -13,7 +14,7 @@ export default function Navbar() {
 
         {/* Logo */}
         <div className="text-2xl font-bold tracking-wide">
-          <span className="text-yellow-400">Astro</span>Veda
+          <span className="text-yellow-400">Shree</span>Parshuram
         </div>
 
         {/* Desktop Navigation */}
@@ -38,9 +39,14 @@ export default function Navbar() {
         </div>
 
         {/* Desktop Button */}
-        <button className="hidden md:block bg-yellow-500 text-black px-6 py-3 rounded-full font-semibold hover:bg-yellow-400 transition duration-300 shadow-lg shadow-yellow-500/20">
-          Book Now
-        </button>
+      
+
+        <Button
+          text="Book Now"
+          className="hidden md:block px-6 py-3 rounded-full bg-yellow-500 text-black hover:bg-yellow-400 transition duration-300 shadow-lg shadow-yellow-500/20"
+        />
+
+
 
         {/* Mobile Menu Button */}
         <button

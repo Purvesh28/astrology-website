@@ -141,7 +141,7 @@ export default function Hero() {
 
             <div className="bg-white/5 border border-white/10 px-6 py-4 rounded-2xl backdrop-blur-md">
               <h3 className="text-2xl font-bold text-yellow-400">
-                12+
+                25+
               </h3>
 
               <p className="text-white/60 text-sm">
@@ -151,7 +151,7 @@ export default function Hero() {
 
             <div className="bg-white/5 border border-white/10 px-6 py-4 rounded-2xl backdrop-blur-md">
               <h3 className="text-2xl font-bold text-yellow-400">
-                5K+
+                150k +
               </h3>
 
               <p className="text-white/60 text-sm">
