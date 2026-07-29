@@ -50,6 +50,8 @@ export async function POST(req: NextRequest) {
 
 
     const bookingData = {
+      action: "create",
+
       bookingId,
 
       firstName: body.firstName,
@@ -73,7 +75,6 @@ export async function POST(req: NextRequest) {
 
       message: body.message,
     };
-
     
 
 

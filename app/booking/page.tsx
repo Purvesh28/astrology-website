@@ -1,10 +1,12 @@
 "use client";
 
 import { useLoading } from "@/context/LoadingContext";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 export default function BookingPage() {
   const { showLoader, hideLoader } = useLoading();
+  const router = useRouter();
 
   const [loading, setLoading] = useState(false);
 
@@ -90,8 +92,43 @@ export default function BookingPage() {
             color: "#2563eb",
           },
 
-          handler: function (response: any) {
+          handler: async function (response: any) {
             console.log("Payment Success:", response);
+
+            try {
+              const verifyResponse = await fetch("/api/payment/verify", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  bookingId: result.bookingId,
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature,
+                }),
+              });
+
+              const verifyResult = await verifyResponse.json();
+
+              console.log("Verification Result:", verifyResult);
+
+              if (verifyResult.success) {
+
+                form.reset();
+
+                router.push(
+                  `/booking/success?bookingId=${verifyResult.bookingId}&paymentId=${verifyResult.razorpay_payment_id}`
+                );
+
+              } else {
+                alert("Payment Verification Failed!");
+              }
+
+            } catch (err) {
+              console.error(err);
+              alert("Unable to verify payment.");
+            }
           },
         };
 
@@ -200,7 +237,7 @@ export default function BookingPage() {
                 Basic Horoscope Reading - ₹499
               </option>
 
-              <option value="advanced">
+              <option value="advance">
                 Advanced Horoscope Consultation - ₹999
               </option>
 
