@@ -8,25 +8,54 @@ export default function BookingPage() {
 
   const [loading, setLoading] = useState(false);
 
+  const loadRazorpayScript = () => {
+    return new Promise<boolean>((resolve) => {
+      const existingScript = document.getElementById("razorpay-checkout");
+
+      if (existingScript) {
+        resolve(true);
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.id = "razorpay-checkout";
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+
+      document.body.appendChild(script);
+    });
+  };
+
   const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
-    e.preventDefault();
+  e: React.FormEvent<HTMLFormElement>
+) => {
+  e.preventDefault();
 
-    setLoading(true);
-    showLoader();
+  // Save the form reference BEFORE any await
+  const form = e.currentTarget;
 
-    const form = e.currentTarget;
+  const data = {
+    firstName: (form.elements.namedItem("firstName") as HTMLInputElement).value,
+    lastName: (form.elements.namedItem("lastName") as HTMLInputElement).value,
+    dob: (form.elements.namedItem("dob") as HTMLInputElement).value,
+    birthPlace: (form.elements.namedItem("birthPlace") as HTMLInputElement).value,
+    birthTime: (form.elements.namedItem("birthTime") as HTMLInputElement).value,
+    phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
+    packageId: (form.elements.namedItem("packageId") as HTMLSelectElement).value,
+    message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
+  };
 
-    const data = {
-      firstName: (form.elements.namedItem("firstName") as HTMLInputElement).value,
-      lastName: (form.elements.namedItem("lastName") as HTMLInputElement).value,
-      dob: (form.elements.namedItem("dob") as HTMLInputElement).value,
-      birthPlace: (form.elements.namedItem("birthPlace") as HTMLInputElement).value,
-      birthTime: (form.elements.namedItem("birthTime") as HTMLInputElement).value,
-      phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
-      message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
-    };
+  const razorpayLoaded = await loadRazorpayScript();
+
+  if (!razorpayLoaded) {
+    alert("Failed to load Razorpay.");
+    return;
+  }
+
+  setLoading(true);
+  showLoader();
 
     try {
       const response = await fetch("/api/booking", 
@@ -40,11 +69,36 @@ export default function BookingPage() {
       );
 
       const result = await response.json();
+      console.log("Booking API Response:", result);
 
       if (result.success) {
-        alert("Booking submitted successfully!");
 
-        form.reset();
+        const options = {
+          key: result.key,
+          amount: result.amount,
+          currency: result.currency,
+          name: "ShreeParshuram Astrology",
+          description: "Astrology Consultation",
+          order_id: result.orderId,
+
+          prefill: {
+            name: `${data.firstName} ${data.lastName}`,
+            contact: data.phone,
+          },
+
+          theme: {
+            color: "#2563eb",
+          },
+
+          handler: function (response: any) {
+            console.log("Payment Success:", response);
+          },
+        };
+
+        const razorpay = new (window as any).Razorpay(options);
+
+        razorpay.open();
+
       } else {
         alert("Something went wrong.");
       }
@@ -127,6 +181,43 @@ export default function BookingPage() {
             required
             className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 outline-none"
           />
+
+          <div>
+            <label className="block mb-2 text-white/80">
+              Consultation Package
+            </label>
+
+            <select
+              name="packageId"
+              required
+              defaultValue="test"
+              className="w-full rounded-2xl border border-yellow-500 bg-[#1d1d2f] text-white px-5 py-4 appearance-none focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            >
+              <option value="test">
+                Basic Horoscope Reading - ₹1
+              </option>
+              <option value="basic">
+                Basic Horoscope Reading - ₹499
+              </option>
+
+              <option value="advanced">
+                Advanced Horoscope Consultation - ₹999
+              </option>
+
+              <option value="career">
+                Career Consultation - ₹999
+              </option>
+
+              <option value="marriage">
+                Marriage Consultation - ₹1499
+              </option>
+
+              <option value="business">
+                Business Consultation - ₹2999
+              </option>
+
+            </select>
+          </div>
 
           <textarea
             name="message"
