@@ -1,3 +1,4 @@
+import { useLoading } from "@/context/LoadingContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
