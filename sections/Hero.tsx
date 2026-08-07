@@ -59,7 +59,7 @@ export default function Hero() {
   />
 
 </motion.div>
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+      <div className="relative z-20 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
 
 
 
@@ -68,7 +68,7 @@ export default function Hero() {
           initial={{ opacity: 0, x: -80 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1 }}
-          className="relative flex justify-center items-center"
+          className="relative z-20 text-center lg:text-left"
         >
 
           {/* Golden Glow Behind Image */}

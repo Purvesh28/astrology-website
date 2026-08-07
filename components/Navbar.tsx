@@ -43,7 +43,8 @@ export default function Navbar() {
 
         <Button
           text="Book Now"
-          className="hidden md:block px-6 py-3 rounded-full bg-yellow-500 text-black hover:bg-yellow-400 transition duration-300 shadow-lg shadow-yellow-500/20"
+          href="/booking"
+          className="hidden md:block px-6 py-3"
         />
 
 
@@ -94,9 +95,11 @@ export default function Navbar() {
             Contact
           </a>
 
-          <button className="bg-yellow-500 text-black px-6 py-3 rounded-full font-semibold">
-            Book Now
-          </button>
+          <Button
+            text="Book Now"
+            href="/booking"
+            className="w-full justify-center"
+          />
 
         </div>
       )}
